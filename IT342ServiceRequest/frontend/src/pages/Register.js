@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 import '../styles/AuthPages.css';
 
@@ -14,7 +13,6 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -51,16 +49,23 @@ const Register = () => {
         password: formData.password,
       });
 
-      const { token, userId, username, email } = response.data;
+      // Display backend success message
+      setSuccess(
+        response.data?.message || 'Registration successful! Redirecting to login...'
+      );
 
-      setSuccess(response.data.message);
-      login({ userId, username, email }, token);
-      
+      // Redirect to login page after 1.5 seconds
       setTimeout(() => {
-        navigate('/requests');
-      }, 1000);
+        navigate('/login');
+      }, 1500);
+
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      console.error('Registration Error:', err);
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        'Registration failed. Please try again.'
+      );
     } finally {
       setLoading(false);
     }

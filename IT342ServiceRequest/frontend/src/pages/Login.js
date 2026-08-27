@@ -29,12 +29,33 @@ const Login = () => {
 
     try {
       const response = await authAPI.login(formData);
-      const { token, userId, username, email } = response.data;
 
-      login({ userId, username, email }, token);
+      // 1. Debug log to inspect backend structure in the F12 Console
+      console.log('Full API Response:', response);
+
+      // 2. Safely extract token and user details depending on backend response shape
+      const token = response.data?.token || response.data?.accessToken;
+      const user = response.data?.user || {
+        userId: response.data?.userId || response.data?._id,
+        username: response.data?.username,
+        email: response.data?.email,
+      };
+
+      if (!token) {
+        throw new Error('No authentication token received from backend.');
+      }
+
+      // 3. Save auth state and navigate
+      login(user, token);
       navigate('/requests');
+
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login Error:', err);
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        'Login failed. Please try again.'
+      );
     } finally {
       setLoading(false);
     }

@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ServiceRequests from './pages/ServiceRequests';
 
-import './App.css';
+import './styles/App.css';
 
 function App() {
   return (
