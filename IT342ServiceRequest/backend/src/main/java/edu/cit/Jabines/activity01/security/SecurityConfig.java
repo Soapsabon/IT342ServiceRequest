@@ -35,32 +35,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .cors().and()
-            .exceptionHandling()
+                .csrf().disable()
+                .cors().and()
+                .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .and()
-            .sessionManagement()
+                .and()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeHttpRequests(authz -> authz
-                // Public endpoints
-                .requestMatchers("/api/register").permitAll()
-                .requestMatchers("/api/login").permitAll()
-                .requestMatchers("/api/health").permitAll()
-                
-                // Protected endpoints - require authentication
-                .requestMatchers(HttpMethod.POST, "/api/requests").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/requests").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/requests/**").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/api/requests/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/api/requests/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
-                .requestMatchers(HttpMethod.POST, "/api/logout").authenticated()
-                
-                // Any other request requires authentication
-                .anyRequest().authenticated()
-            );
+                .and()
+                .authorizeHttpRequests(authz -> authz
+                        // Public endpoints
+                        .requestMatchers("/api/register").permitAll()
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/health").permitAll()
+
+                        // Protected endpoints - require authentication
+                        .requestMatchers(HttpMethod.POST, "/api/requests").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/requests").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/requests/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/requests/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/requests/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/logout").authenticated()
+
+                        // Any other request requires authentication
+                        .anyRequest().authenticated()
+                );
 
         // Add JWT filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

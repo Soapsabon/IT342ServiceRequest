@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/IT342ServiceRequest.iml" filepath="$PROJECT_DIR$/.idea/IT342ServiceRequest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IT342ServiceRequest/backend/activity01.iml" filepath="$PROJECT_DIR$/IT342ServiceRequest/backend/activity01.iml" />
     </modules>
   </component>
 </project>
